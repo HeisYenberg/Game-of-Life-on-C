@@ -130,7 +130,7 @@ void print_grid(int **grid, int gen_count) {
 }
 
 void change_grid(int **grid, int *flag) {
-    int **new_grid = calloc(ROWS, sizeof(int *)), count = 0, count2 = 0;
+    int **new_grid = calloc(ROWS, sizeof(int *)), count = 0;
     for (int i = 0; i < ROWS; i++) new_grid[i] = calloc(COLS, sizeof(int));
     for (int i = 1; i < ROWS - 1; i++)
         for (int j = 1; j < COLS - 1; j++) {
@@ -155,9 +155,8 @@ void change_grid(int **grid, int *flag) {
         for (int j = 0; j < COLS; j++) {
             if (grid[i][j] == new_grid[i][j]) count++;
             grid[i][j] = new_grid[i][j];
-            count2++;
         }
-    if (count == count2) *flag = 0;
+    if (count == ROWS * COLS) *flag = 0;
     for (int i = 0; i < ROWS; i++) free(new_grid[i]);
     free(new_grid);
 }
