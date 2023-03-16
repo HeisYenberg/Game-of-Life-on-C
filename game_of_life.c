@@ -10,7 +10,7 @@ int read_file(int **grid);
 int is_alive(int **grid);
 int control(int *game_speed);
 void start_game(int **grid);
-void change_grid(int **grid, int *flag);
+void change_grid(int **grid, int *non_stable);
 void print_grid(int **grid, int gen_count);
 
 int main() {
@@ -26,7 +26,7 @@ int main() {
 }
 
 void start_game(int **grid) {
-    int game_speed = 150000, gen_count = 0, flag = 1;
+    int game_speed = 150000, gen_count = 0, non_stable = 1;
     initscr();
     clear();
     noecho();
@@ -34,13 +34,13 @@ void start_game(int **grid) {
         nodelay(stdscr, TRUE);
         clear();
         print_grid(grid, gen_count);
-        change_grid(grid, &flag);
-        if (!is_alive(grid) || flag == 0) {
+        change_grid(grid, &non_stable);
+        if (!is_alive(grid) || !non_stable) {
             for (int i = 0; i < ROWS; i++) free(grid[i]);
             free(grid);
             endwin();
             printf("Your colony lasted for %d years.\n", gen_count);
-            if (flag == 0) printf("And now continues to live in peace.\n");
+            if (!non_stable) printf("And now continues to live in peace.\n");
             break;
         }
         if (!control(&game_speed)) {
@@ -129,7 +129,7 @@ void print_grid(int **grid, int gen_count) {
     }
 }
 
-void change_grid(int **grid, int *flag) {
+void change_grid(int **grid, int *non_stable) {
     int **new_grid = calloc(ROWS, sizeof(int *)), count = 0;
     for (int i = 0; i < ROWS; i++) new_grid[i] = calloc(COLS, sizeof(int));
     for (int i = 1; i < ROWS - 1; i++)
@@ -156,7 +156,7 @@ void change_grid(int **grid, int *flag) {
             if (grid[i][j] == new_grid[i][j]) count++;
             grid[i][j] = new_grid[i][j];
         }
-    if (count == ROWS * COLS) *flag = 0;
+    if (count == ROWS * COLS) *non_stable = 0;
     for (int i = 0; i < ROWS; i++) free(new_grid[i]);
     free(new_grid);
 }
