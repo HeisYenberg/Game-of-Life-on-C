@@ -140,13 +140,13 @@ void change_grid(int **grid, int *non_stable) {
                 new_grid[i][j] = grid[i][j];
             else if (sum == 3)
                 new_grid[i][j] = 1;
-            else if (new_grid[1][j] == 1)
-                new_grid[ROWS - 3][j] = 1;
-            else if (new_grid[ROWS - 1][j] == 1)
+            else if (new_grid[2][j] == 1)
+                new_grid[ROWS - 2][j] = 1;
+            else if (new_grid[ROWS - 2][j] == 1)
                 new_grid[2][j] = 1;
-            else if (new_grid[i][1] == 1)
-                new_grid[i][COLS - 3] = 1;
-            else if (new_grid[i][COLS - 1] == 1)
+            else if (new_grid[i][2] == 1)
+                new_grid[i][COLS - 2] = 1;
+            else if (new_grid[i][COLS - 2] == 1)
                 new_grid[i][2] = 1;
             else
                 new_grid[i][j] = 0;
