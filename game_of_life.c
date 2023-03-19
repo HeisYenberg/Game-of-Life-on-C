@@ -82,8 +82,8 @@ int read_file(int **grid) {
 
 int is_alive(int **grid) {
     int temp = 0;
-    for (int i = 1; i < ROWS - 1; i++)
-        for (int j = 1; j < COLS - 1; j++) temp += grid[i][j];
+    for (int i = 0; i < ROWS; i++)
+        for (int j = 0; j < COLS; j++) temp += grid[i][j];
     if (temp == 0)
         return 0;
     else
@@ -141,11 +141,11 @@ void change_grid(int **grid, int *non_stable) {
             else if (sum == 3)
                 new_grid[i][j] = 1;
             else if (new_grid[1][j] == 1)
-                new_grid[ROWS - 2][j] = 1;
+                new_grid[ROWS - 3][j] = 1;
             else if (new_grid[ROWS - 1][j] == 1)
                 new_grid[2][j] = 1;
             else if (new_grid[i][1] == 1)
-                new_grid[i][COLS - 2] = 1;
+                new_grid[i][COLS - 3] = 1;
             else if (new_grid[i][COLS - 1] == 1)
                 new_grid[i][2] = 1;
             else
