@@ -6,7 +6,7 @@
 #define ROWS 27
 #define COLS 82
 
-int read_file(int **grid);
+int **read_file();
 int is_alive(int **grid);
 int control(int *game_speed);
 void start_game(int **grid);
@@ -14,15 +14,11 @@ void change_grid(int **grid, int *non_stable);
 void print_grid(int **grid, int gen_count);
 
 int main() {
-    int **grid = calloc(ROWS, sizeof(int *));
-    for (int i = 0; i < ROWS; i++) grid[i] = calloc(COLS, sizeof(int));
-    if (read_file(grid)) {
+    int **grid = read_file();
+    if (grid)
         start_game(grid);
-    } else {
-        for (int i = 0; i < ROWS; i++) free(grid[i]);
-        free(grid);
+    else
         printf("Invalid file :(");
-    }
 }
 
 void start_game(int **grid) {
@@ -54,15 +50,17 @@ void start_game(int **grid) {
     }
 }
 
-int read_file(int **grid) {
+int **read_file() {
     printf("To start the game, enter the name of one of the following starting points:\n");
     printf("- \"centinal.txt\"\n- \"crabs.txt\"\n- \"diamonds.txt\"\n- \"long.txt\"\n- \"swan.txt\"\n");
     FILE *file;
-    int flag = 1;
+    int **grid = 0, flag = 1;
     char file_name[100];
     scanf("%99s", file_name);
     file = fopen(file_name, "r");
-    if (file != NULL) {
+    if (file) {
+        grid = calloc(ROWS, sizeof(int *));
+        for (int i = 0; i < ROWS; i++) grid[i] = calloc(COLS, sizeof(int));
         for (int i = 1; i < ROWS - 1; i++)
             for (int j = 1; j < COLS - 1; j++) {
                 char c = fgetc(file);
@@ -75,9 +73,13 @@ int read_file(int **grid) {
             }
         if (fgetc(file) != EOF) flag = 0;
         fclose(file);
-    } else
-        flag = 0;
-    return flag;
+        if (flag == 0) {
+            for (int i = 0; i < ROWS; i++) free(grid[i]);
+            free(grid);
+            grid = 0;
+        }
+    }
+    return grid;
 }
 
 int is_alive(int **grid) {
@@ -140,13 +142,13 @@ void change_grid(int **grid, int *non_stable) {
                 new_grid[i][j] = grid[i][j];
             else if (sum == 3)
                 new_grid[i][j] = 1;
-            else if (new_grid[2][j] == 1)
+            else if (new_grid[1][j])
                 new_grid[ROWS - 2][j] = 1;
-            else if (new_grid[ROWS - 2][j] == 1)
+            else if (new_grid[ROWS - 2][j])
                 new_grid[2][j] = 1;
-            else if (new_grid[i][2] == 1)
+            else if (new_grid[i][1])
                 new_grid[i][COLS - 2] = 1;
-            else if (new_grid[i][COLS - 2] == 1)
+            else if (new_grid[i][COLS - 2])
                 new_grid[i][2] = 1;
             else
                 new_grid[i][j] = 0;
