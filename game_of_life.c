@@ -10,6 +10,7 @@ int **read_file();
 int is_alive(int **grid);
 int control(int *game_speed);
 void start_game(int **grid);
+void grid_collision(int **grid, int i, int j);
 void change_grid(int **grid, int *non_stable);
 void print_grid(int **grid, int gen_count);
 
@@ -132,6 +133,13 @@ void print_grid(int **grid, int gen_count) {
     }
 }
 
+void grid_collision(int **grid, int i, int j) {
+    if (grid[1][j]) grid[ROWS - 3][j] = 1;
+    if (grid[ROWS - 2][j]) grid[2][j] = 1;
+    if (grid[i][1]) grid[i][COLS - 2] = 1;
+    if (grid[i][COLS - 3]) grid[i][2] = 1;
+}
+
 void change_grid(int **grid, int *non_stable) {
     int **new_grid = calloc(ROWS, sizeof(int *)), count = 0;
     for (int i = 0; i < ROWS; i++) new_grid[i] = calloc(COLS, sizeof(int));
@@ -139,12 +147,7 @@ void change_grid(int **grid, int *non_stable) {
         for (int j = 1; j < COLS - 1; j++) {
             int sum = grid[i + 1][j] + grid[i - 1][j] + grid[i][j + 1] + grid[i][j - 1] + grid[i - 1][j - 1] +
                       grid[i + 1][j + 1] + grid[i + 1][j - 1] + grid[i - 1][j + 1];
-
-            if (new_grid[1][j]) new_grid[ROWS - 3][j] = 1;
-            if (new_grid[ROWS - 2][j]) new_grid[2][j] = 1;
-            if (new_grid[i][1]) new_grid[i][COLS - 2] = 1;
-            if (new_grid[i][COLS - 3]) new_grid[i][2] = 1;
-
+            grid_collision(new_grid, i, j);
             if (sum == 2)
                 new_grid[i][j] = grid[i][j];
             else if (sum == 3)
