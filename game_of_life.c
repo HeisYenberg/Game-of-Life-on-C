@@ -54,11 +54,12 @@ int **read_file() {
     printf("To start the game, enter the name of one of the following starting points:\n");
     printf("- \"centinal.txt\"\n- \"crabs.txt\"\n- \"diamonds.txt\"\n- \"long.txt\"\n- \"swan.txt\"\n");
     FILE *file;
-    int **grid = 0, flag = 1;
+    int **grid = 0;
     char file_name[100];
     scanf("%99s", file_name);
     file = fopen(file_name, "r");
     if (file) {
+        int flag = 1;
         grid = calloc(ROWS, sizeof(int *));
         for (int i = 0; i < ROWS; i++) grid[i] = calloc(COLS, sizeof(int));
         for (int i = 1; i < ROWS - 1; i++)
@@ -138,18 +139,16 @@ void change_grid(int **grid, int *non_stable) {
         for (int j = 1; j < COLS - 1; j++) {
             int sum = grid[i + 1][j] + grid[i - 1][j] + grid[i][j + 1] + grid[i][j - 1] + grid[i - 1][j - 1] +
                       grid[i + 1][j + 1] + grid[i + 1][j - 1] + grid[i - 1][j + 1];
+
+            if (new_grid[1][j]) new_grid[ROWS - 3][j] = 1;
+            if (new_grid[ROWS - 2][j]) new_grid[2][j] = 1;
+            if (new_grid[i][1]) new_grid[i][COLS - 2] = 1;
+            if (new_grid[i][COLS - 3]) new_grid[i][2] = 1;
+
             if (sum == 2)
                 new_grid[i][j] = grid[i][j];
             else if (sum == 3)
                 new_grid[i][j] = 1;
-            else if (new_grid[1][j])
-                new_grid[ROWS - 2][j] = 1;
-            else if (new_grid[ROWS - 2][j])
-                new_grid[2][j] = 1;
-            else if (new_grid[i][1])
-                new_grid[i][COLS - 2] = 1;
-            else if (new_grid[i][COLS - 2])
-                new_grid[i][2] = 1;
             else
                 new_grid[i][j] = 0;
         }
