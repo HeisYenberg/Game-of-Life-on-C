@@ -59,7 +59,7 @@ int **read_file() {
     char file_name[100];
     scanf("%99s", file_name);
     file = fopen(file_name, "r");
-    if (file) {
+    if (file && getchar() == '\n') {
         int flag = 1;
         grid = calloc(ROWS, sizeof(int *));
         for (int i = 0; i < ROWS; i++) grid[i] = calloc(COLS, sizeof(int));
