@@ -1,6 +1,6 @@
 # Game-of-Life-on-C
 
-![pic](pictures/readme_pic.png)
+![pic](misc/images/readme_pic.png)
 
 Terminal game on C. Doesn't work on Windows unless you use WSL.
 To run it you need to compile it with "-lncurses" flag.

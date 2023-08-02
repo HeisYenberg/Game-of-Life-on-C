@@ -52,14 +52,19 @@ void start_game(int **grid) {
 }
 
 int **read_file() {
-    printf("To start the game, enter the name of one of the following starting points:\n");
-    printf("- \"centinal.txt\"\n- \"crabs.txt\"\n- \"diamonds.txt\"\n- \"long.txt\"\n- \"swan.txt\"\n");
+    printf(
+        "To start the game, enter the name of one of the following starting "
+        "points:\n");
+    printf(
+        "- \"../data-samples/centinal.txt\"\n- \"../data-samples/crabs.txt\"\n- "
+        "\"../data-samples/diamonds.txt\"\n- \"../data-samples/long.txt\"\n- "
+        "\"../data-samples/swan.txt\"\n");
     FILE *file;
     int **grid = 0;
     char file_name[100];
     scanf("%99s", file_name);
     file = fopen(file_name, "r");
-    if (file && getchar() == '\n') {
+    if (file) {
         int flag = 1;
         grid = calloc(ROWS, sizeof(int *));
         for (int i = 0; i < ROWS; i++) grid[i] = calloc(COLS, sizeof(int));
@@ -109,15 +114,21 @@ int control(int *game_speed) {
 void print_grid(int **grid, int gen_count) {
     printw(
         "\t\t\t\t\t     #####                                           #\n"
-        "\t\t\t\t\t    #     #   ##   #    # ######     ####  ######    #       # ###### ######\n"
-        "Press \"W\" to speed up\t\t\t    #        #  #  ##  ## #         #    # #         #       # #      "
+        "\t\t\t\t\t    #     #   ##   #    # ######     ####  ######    #       "
+        "# ###### ######\n"
+        "Press \"W\" to speed up\t\t\t    #        #  #  ##  ## #         #    # "
+        "#         #       # #      "
         "#\n"
-        "the game,\t\t\t\t    #  #### #    # # ## # #####     #    # #####     #       # #####  "
+        "the game,\t\t\t\t    #  #### #    # # ## # #####     #    # #####     # "
+        "      # #####  "
         "#####\t\t\t\tYour colony lasting\n"
-        "or \"S\" to slow down.\t\t\t    #     # ###### #    # #         #    # #         #       # #      "
+        "or \"S\" to slow down.\t\t\t    #     # ###### #    # #         #    # "
+        "#         #       # #      "
         "#\t\t\t\t\tfor %d years\n"
-        "Press \"Q\" to quit.\t\t\t    #     # #    # #    # #         #    # #         #       # #      #\n"
-        "\t\t\t\t\t     #####  #    # #    # ######     ####  #         ####### # #      ######\n",
+        "Press \"Q\" to quit.\t\t\t    #     # #    # #    # #         #    # #  "
+        "       #       # #      #\n"
+        "\t\t\t\t\t     #####  #    # #    # ######     ####  #         ####### "
+        "# #      ######\n",
         gen_count);
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
